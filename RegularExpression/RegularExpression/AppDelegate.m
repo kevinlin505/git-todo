@@ -19,7 +19,7 @@
     
     NSLog(@"1");
     
-    NSArray *filteredArray = @[@"Hello", @"$#@", @"fee:fe", @"325.432", @"World", @"{}", @"()", @"[]", @"<>?:'", @"ferf.fw"];
+    NSArray *filteredArray = [self regexFilterWithArray:@[@"Hello", @"I'm", @"fee fe", @"32527e574", @"3421", @"325.432", @"World", @"{}()[]", @"<>?:'", @"ferf-fw"]];
     NSString *alphaNumeric = [self alphaNumericWithString:@"fef2354fd3.eger˜`!@#$%ˆ&*()-_+=<,>>.?/?:;\"\'|\\}]{[g23rr/#395FRG';,<AFOsfwjbefwejf"];
     NSString *filteredString = [self symbolFilteringWithString:@"fef2354fd3.eger˜`!@#$%ˆ&*()-_+=<,>>.?/?:;\"\'|\\}]{[g23rr/#395FRG';,<AFOsfwjbefwejf"];
     
@@ -32,16 +32,16 @@
 
 -(NSArray *)regexFilterWithArray:(NSArray *)array{
     
-    NSString *regex = @"[a-z0-9]*";
-    NSPredicate *filterPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    NSString *regex = @"[a-z]*[- ']*[a-z]*";
+    NSPredicate *filterPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES[c] %@", regex];
+    NSArray *tempArray = [array filteredArrayUsingPredicate:filterPredicate];
     
-    return [array filteredArrayUsingPredicate:filterPredicate];
+    return tempArray;
 }
 
 -(NSString *)alphaNumericWithString:(NSString *)string{
     
     NSCharacterSet *symbols = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
-    
     return [[string componentsSeparatedByCharactersInSet:symbols] componentsJoinedByString:@""];
 }
 
